@@ -175,6 +175,9 @@ def main():
     parser.add_argument('--requires', metavar='Name', type=str, nargs='+', 
         help='Names of Munki packages to add to requirements.',
     )
+    parser.add_argument('--icon', metavar='IconName', type=str, nargs=1, 
+        help='Name of display icon to use for package.',
+    )
     args = parser.parse_args()
     if args.publish:
         publish = True
@@ -204,6 +207,8 @@ def main():
         contents["catalogs"] += args.catalogs
     if args.requires:
         contents["requires"] += args.requires
+    if args.icon:
+        contents["icon_name"] = args.icon[0]
     contents["description"]  = "Installer for " + args.description[0]
     contents["display_name"] = args.description[0]
     contents["installcheck_script"] = installcheck
