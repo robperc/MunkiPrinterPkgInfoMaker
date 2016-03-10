@@ -137,6 +137,7 @@ def genPlist():
         unattended_install=True,
         uninstall_method="uninstall_script",
         uninstall_script="",
+        requires=list(),
         uninstallable=True,
         version="",
     )
@@ -165,11 +166,14 @@ def main():
     parser.add_argument('--version', metavar='x.x', type=float, nargs=1, required=True,
         help='Version for pkginfo.',
     )
-    parser.add_argument('--options', metavar='opt1=foo opt2=bar', type=str, nargs='+', 
-        help='String of additional options to configure printer with',
+    parser.add_argument('--options', metavar='opt=foo', type=str, nargs='+', 
+        help='Additional options to configure printer with',
     )
     parser.add_argument('--catalogs', metavar='catalog_name', type=str, nargs='+', 
-        help='Additional catalogs to add to catalogs array for pkginfo. "testing" is always added by default."',
+        help='Additional catalogs to add to catalogs array for pkginfo. "testing" is always added by default.',
+    )
+    parser.add_argument('--requires', metavar='Name', type=str, nargs='+', 
+        help='Names of Munki packages to add to requirements.',
     )
     args = parser.parse_args()
     if args.publish:
@@ -193,12 +197,13 @@ def main():
     postinstall  = postinstall_script
     uninstall    = uninstall_script
     for key, value in mappings.iteritems():
-        print "%s: %s" % (key, value)
         installcheck = installcheck.replace(key, value)
         postinstall = postinstall.replace(key, value)
         uninstall = uninstall.replace(key, value)
     if args.catalogs:
         contents["catalogs"] += args.catalogs
+    if args.requires:
+        contents["requires"] += args.requires
     contents["description"]  = "Installer for " + args.description[0]
     contents["display_name"] = args.description[0]
     contents["installcheck_script"] = installcheck
