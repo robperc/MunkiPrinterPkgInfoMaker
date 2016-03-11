@@ -30,7 +30,7 @@ if os.path.isfile(receipt):
 else:
     storedVersion = 0.0
 
-# Printer Install
+# Check if printer with same name already installed
 try:
     subprocess.check_call(["/usr/bin/lpstat", "-p", printername], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     installed = True
