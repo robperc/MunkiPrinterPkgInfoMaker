@@ -185,6 +185,8 @@ def main():
         publish = False
     if args.options:
         opts = " ".join(args.options)
+    else:
+        opts=""
     contents = genPlist()
     mappings = dict(
         PRINTER_NAME=args.name[0],
