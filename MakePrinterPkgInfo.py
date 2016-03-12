@@ -32,17 +32,21 @@ else:
 
 # Check if printer with same name already installed
 try:
-    subprocess.check_call(["/usr/bin/lpstat", "-p", printername], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    installed = True
-except:
-    installed = False
+    info = subprocess.check_output(["/usr/bin/lpstat", "-v", printername], stderr=subprocess.PIPE).strip()
+    # If uri of installed printer is not the same as the uri specified in pkginfo then we need to reinstall
+    if info.split(": ")[1] != address:
+        print "%s not equal %s" % (info.split(": ")[1], address)
+        sys.exit(0)
 
+except Exception as e:
+    print str(e)
+    sys.exit(0)
 
-if installed:
-    if currentVersion <= storedVersion:
-        sys.exit(1)
+if currentVersion &gt; storedVersion:
+    print "%s greater than %s" % (currentVersion, storedVersion)
+    sys.exit(0)
 
-sys.exit(0)""".encode('ascii', 'xmlcharrefreplace')
+sys.exit(1)""".encode('ascii', 'xmlcharrefreplace')
 
 postinstall_script = """#!/usr/bin/python
 
@@ -107,9 +111,9 @@ subprocess.call(["/usr/sbin/cupsenable", printername])
 
 # Create a receipt for the printer
 receipt_dir = "/private/etc/cups/deployment/receipts"
-receipt = "%s/%s" % (receipt_dir, printername)
+receipt = "%s/%s.plist" % (receipt_dir, printername)
 subprocess.call(["/bin/mkdir", "-p", receipt_dir])
-contents = dict(version=currentVersion,)
+contents = dict(version=str(currentVersion),)
 plistlib.writePlist(contents, receipt)
 
 # Permission the directories properly.
@@ -217,7 +221,6 @@ def main():
     contents["postinstall_script"] = postinstall
     contents["uninstall_script"] = uninstall
     contents["name"] = args.name[0]
-    contents["version"] = args.version[0]
     pkginfo = args.name[0] + ".pkginfo"
     plistlib.writePlist(contents, pkginfo)
 
