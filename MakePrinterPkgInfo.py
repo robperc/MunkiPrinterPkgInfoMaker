@@ -42,7 +42,7 @@ except Exception as e:
     print str(e)
     sys.exit(0)
 
-if currentVersion &gt; storedVersion:
+if currentVersion > storedVersion:
     print "%s greater than %s" % (currentVersion, storedVersion)
     sys.exit(0)
 
@@ -221,6 +221,7 @@ def main():
     contents["postinstall_script"] = postinstall
     contents["uninstall_script"] = uninstall
     contents["name"] = args.name[0]
+    contents["version"] = args.version[0]
     pkginfo = args.name[0] + ".pkginfo"
     plistlib.writePlist(contents, pkginfo)
 
