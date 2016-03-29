@@ -215,13 +215,13 @@ def main():
         contents["requires"] += args.requires
     if args.icon:
         contents["icon_name"] = args.icon[0]
-    contents["description"]  = "Installer for " + args.description[0]
-    contents["display_name"] = args.description[0]
+    contents["description"]         = "Installer for " + args.description[0]
+    contents["display_name"]        = args.description[0]
     contents["installcheck_script"] = installcheck
-    contents["postinstall_script"] = postinstall
-    contents["uninstall_script"] = uninstall
-    contents["name"] = args.name[0]
-    contents["version"] = args.version[0]
+    contents["postinstall_script"]  = postinstall
+    contents["uninstall_script"]    = uninstall
+    contents["name"]                = args.name[0]
+    contents["version"]             = args.version[0]
     pkginfo = args.name[0] + ".pkginfo"
     plistlib.writePlist(contents, pkginfo)
 
