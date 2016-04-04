@@ -221,7 +221,7 @@ def main():
     contents["postinstall_script"]  = postinstall
     contents["uninstall_script"]    = uninstall
     contents["name"]                = args.name[0]
-    contents["version"]             = args.version[0]
+    contents["version"]             = str(args.version[0])
     pkginfo = args.name[0] + ".pkginfo"
     plistlib.writePlist(contents, pkginfo)
 
