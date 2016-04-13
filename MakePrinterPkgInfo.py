@@ -139,6 +139,7 @@ def genPlist():
         name="",
         postinstall_script="",
         unattended_install=True,
+        unattended_uninstall=True,
         uninstall_method="uninstall_script",
         uninstall_script="",
         requires=list(),
