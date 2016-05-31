@@ -1,3 +1,4 @@
+#!/usr/bin/python
 """
 Generates Munki no-pkg pkginfo for printer with specified settings.
 Installcheck and postinstall scripts based on Walter Meyer's approach (found here: https://github.com/munki/munki/wiki/Managing-Printers-With-Munki)
